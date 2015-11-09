@@ -58,8 +58,8 @@ wordsetItem _ n = error $ "wordSetItem called with n=" ++ show n
 
 data Card = CardA | CardB | CardC | CardD deriving (Eq, Read, Show, Bounded, Enum)
 
-type ListOneCounter = MapL.Map ItemPair Int
-type ListTwoCounter = MapL.Map Item     Int
+type ListOneCounter = MapL.Map ItemPair (Int, Int)
+type ListTwoCounter = MapL.Map Item     (Int, Int)
 
 data BackendCtx =
   BackendCtx { ctxListOne :: [ItemPair]

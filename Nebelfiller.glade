@@ -644,7 +644,7 @@
                                       <object class="GtkLabel" id="label6">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;Card B&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;Card C&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                     </child>
@@ -888,7 +888,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Wordsets with ambiguous initial sounds:&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Wordsets with ambiguous initial letters:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>

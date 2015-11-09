@@ -79,10 +79,12 @@ initState builder listOne listTwo =
 
         -- Initialize the listOne resp. listTwo counters in the
         -- Backend Ctx.
-        initListCounter :: (Ord a) => [a] -> MapL.Map a Int
-        initListCounter =
-          foldl (\ m pair -> MapL.insert pair (fromInteger nebelfillerRepetitionsN) m)
-            MapL.empty
+        initListCounter :: (Ord a) => [a] -> MapL.Map a (Int, Int)
+        initListCounter list =
+          let list' = zip list [1..]
+          in foldl (\ m (pair, idx) ->
+                     MapL.insert pair (idx, (fromInteger nebelfillerRepetitionsN)) m)
+               MapL.empty list'
 
 setupFonts :: BackendCtx -> IO ()
 setupFonts bctx = do
@@ -463,10 +465,22 @@ compareCol :: ColumnId ItemDesc String
 compareCol = makeColumnIdString 0
 
 listOnePairsAvailable :: BackendCtx -> [ItemPair]
-listOnePairsAvailable bctx = listFst $ MapL.toList $ MapL.filter (> 0) (ctxListOneCounter bctx)
-
+listOnePairsAvailable bctx =
+  (listFst
+   . (sortBy cmpPairs)
+   . MapL.toList
+   . (MapL.filter (\ (_, counter) -> counter > 0)))
+    (ctxListOneCounter bctx)
+  where cmpPairs (_, (idx, _)) (_, (idx', _)) = compare idx idx'
+    
 listTwoItemsAvailable :: BackendCtx -> [Item]
-listTwoItemsAvailable bctx = listFst $ MapL.toList $ MapL.filter (> 0) (ctxListTwoCounter bctx)
+listTwoItemsAvailable bctx =
+  (listFst
+   . (sortBy cmpItems)
+   . MapL.toList
+   . MapL.filter (\ (_, counter) -> counter > 0))
+    (ctxListTwoCounter bctx)
+  where cmpItems (_, (idx, _)) (_, (idx', _)) = compare idx idx'
 
 -- FIXME, write better.
 updateCardEntries' :: BackendCtx -> Card -> IO ()
@@ -598,28 +612,28 @@ normalizeItemPair bc i0 i1 =
                          \for items " ++ show (i0, i1)))
 
 modifyCounter :: (Show a, Ord a) =>
-                 (Int -> Int) -> a -> MapL.Map a Int -> MapL.Map a Int
+                 (Int -> Int) -> a -> MapL.Map a (Int, Int) -> MapL.Map a (Int, Int)
 modifyCounter f k m =
-  let maybeCounter = MapL.lookup k m
-      counter = fromMaybe (error ("[modifyCounter] no counter found \
-                                  \for key = " ++ show k))
-                          maybeCounter
+  let maybeVal = MapL.lookup k m
+      (idx, counter) = fromMaybe (error ("[modifyCounter] no counter found \
+                                         \for key = " ++ show k))
+                          maybeVal
       counter' = f counter
-  in MapL.insert k counter' m
+  in MapL.insert k (idx, counter') m
 
-incrementCounter :: (Show a, Ord a) => MapL.Map a Int -> a -> MapL.Map a Int
+incrementCounter :: (Show a, Ord a) => MapL.Map a (Int, Int) -> a -> MapL.Map a (Int, Int)
 incrementCounter m k = modifyCounter (1 +) k m
 
 incrementCounters :: (Show a, Ord a) =>
-                     (a -> Bool) -> MapL.Map a Int -> [a] -> MapL.Map a Int
+                     (a -> Bool) -> MapL.Map a (Int, Int) -> [a] -> MapL.Map a (Int, Int)
 incrementCounters filterFunc m ks =
   foldl incrementCounter m $ filter filterFunc ks
 
-decrementCounter :: (Show a, Ord a) => MapL.Map a Int -> a -> MapL.Map a Int
+decrementCounter :: (Show a, Ord a) => MapL.Map a (Int, Int) -> a -> MapL.Map a (Int, Int)
 decrementCounter m k = modifyCounter (+ (-1)) k m
 
 decrementCounters :: (Show a, Ord a) =>
-                     (a -> Bool) -> MapL.Map a Int -> [a] -> MapL.Map a Int
+                     (a -> Bool) -> MapL.Map a (Int, Int) -> [a] -> MapL.Map a (Int, Int)
 decrementCounters filterFunc m ks =
   foldl decrementCounter m $ filter filterFunc ks
 
