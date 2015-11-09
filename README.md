@@ -6,6 +6,8 @@ assistance tool for users in putting together wordsets respecting specific
 constraints. Wosa implements basic program logic while the real work, including
 a user interface, is to be implemented by a backend module.
 
+The homepage of Wosa is http://wosa.silverratio.net
+
 Backend: Nebelfiller
 ====================
 
