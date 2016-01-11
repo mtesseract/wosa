@@ -866,7 +866,7 @@
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
                                     <property name="yalign">0.43999999761581421</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Number of Wordsets:&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Number of wordsets:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                 </child>
@@ -888,7 +888,8 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Wordsets with ambiguous initial letters:&lt;/b&gt;</property>
+                                    <property name="label"
+                                              translatable="yes">&lt;b&gt;Wordsets containing items with overlapping initial letters:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>
@@ -902,7 +903,7 @@
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
                                     <property name="ypad">4</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;More than 3 Wordsets containing a common item:&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;More than 3 wordsets containing a common item:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>
@@ -1012,7 +1013,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Incomplete Wordsets:&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Incomplete wordsets:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>

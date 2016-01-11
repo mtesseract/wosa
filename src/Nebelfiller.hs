@@ -35,8 +35,8 @@ nebelfillerRepetitionsN = 3
 
 -- This is the number of wordsets this Wosa backend wants to produce.
 nebelfillerWordsetsN :: Int
--- nebelfillerWordsetsN = 30
-nebelfillerWordsetsN = 87
+nebelfillerWordsetsN = 27
+-- nebelfillerWordsetsN = 87
 
 backendUsage :: String
 backendUsage = "<list1> <list2> <number>"
