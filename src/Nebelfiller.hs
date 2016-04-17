@@ -582,7 +582,6 @@ nebelfillerPresentWordset ctx' ws wsNo card = do
 -- contained in listOne. If no of the two possible item combinations
 -- is found, return Nothing.
 findItemPair :: BackendCtx -> Item -> Item -> Maybe ItemPair
---findItemPair bctx item0 item1 | trace ("[findItempair] item0 = " ++ (show item0) ++ "; item1 = " ++ (show item1)) False = undefined
 findItemPair bctx item0 item1
   | itemPair0 `elem` listOne = Just itemPair0
   | itemPair1 `elem` listOne = Just itemPair1

@@ -1,4 +1,4 @@
--- Copyright (C) 2015 Moritz Schulte <mtesseract@silverratio.net>
+-- Copyright (C) 2015-2016 Moritz Schulte <mtesseract@silverratio.net>
 
 module Wosa where
 
@@ -8,25 +8,26 @@ import Data.Typeable
 import Data.IORef
 
 import Nebelfiller.Datatypes
--- FIXME
 
--- These are the possible "actions". These allow for transforming a
+-- | These are the possible "actions". These allow for transforming a
 -- given state to some other state.
 data WosaAction =
      ActionInit
    | ActionNop
-   | ActionSuggestWordset     --   Nebelfiller shall produce a new
-                                           -- quadruple suggestion.
-   | ActionAcceptWordset   --   The user accepts teh current
-                                    -- quadruple proposal.
+   | ActionSuggestWordset     -- ^ Backend shall produce a new
+                              -- quadruple suggestion.
+    | ActionAcceptWordset   -- ^ The user accepts the current
+                            -- quadruple proposal.
    | ActionSuggestOrAcceptWordset
-   | ActionRejectWordset   --   The user rejects the current quadruple
-                                    -- suggestions and wants to work on the
-                                    -- current quadruple manually.
-   | ActionLoadWordset Int Card      --   Load a quadruple into a card.
-   | ActionSaveWordset Int Card      --   The user wants to save quadruple on
-                                     -- the specified card.
-   | ActionQuit              --   Nebelfiller shall quit.
+   | ActionRejectWordset   -- ^ The user rejects the current wordset
+                           -- suggestions and wants to work on the
+                           -- current quadruple manually.
+   | ActionLoadWordset Int Card      -- ^ Load a quadruple into a
+                                     -- card.
+   | ActionSaveWordset Int Card      -- ^ The user wants to save
+                                     -- quadruple on the specified
+                                     -- card.
+   | ActionQuit              -- ^ Program shall quit.
    deriving (Eq, Show)
 
 type WordsetMap = Map Integer Wordset
@@ -36,20 +37,25 @@ data WosaException = ExceptionString String | ExceptionNone
 
 instance Exception WosaException
 
---  These are the possible states types.
-data State = StateNothing          -- Dummy state.
-  | StateManually         -- User is free to modify edit wordsets.
-  | StateAsk
+-- | These are the possible states types.
+data State = StateNothing -- ^ Dummy state.
+  | StateManually         -- ^ User is free to modify edit wordsets.
+  | StateAsk              -- ^ Used is presented a new wordset
+                          -- suggestion and asked if that is a good
+                          -- word set.
   deriving (Eq, Show)
 
--- The global state of this application is stored in the Ctx datatype.
+-- | The global state of this application is stored in the Ctx
+-- datatype.
 data Ctx = Ctx { ctxState    :: State
                , ctxDebug    :: Bool
                , ctxBackend  :: BackendCtx
                , ctxWordsets :: WordsetMap
                }
 
-type BackendActionInitialize        = [String] -> (WosaAction -> IO ()) -> IO (Either String (WordsetMap, BackendCtx))
+-- | Actions implemented by the backend.
+type BackendActionInitialize        = [String] -> (WosaAction -> IO ())
+                                               -> IO (Either String (WordsetMap, BackendCtx))
 type BackendActionLoop              = Ctx -> IO ()
 type BackendActionQuit              = Ctx -> IO ()
 type BackendActionPrintWordset      = Wordset -> String
